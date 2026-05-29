@@ -38,7 +38,7 @@
       color: #666;
     }
 
-    /* CARDS */
+    /* SOCIAL CARDS */
     .cards {
       display: flex;
       gap: 25px;
@@ -84,7 +84,7 @@
       color: #777;
     }
 
-    /* GALLERY */
+    /* SECTION TITLE */
     .section-title {
       text-align: center;
       font-size: 2rem;
@@ -92,6 +92,7 @@
       color: #444;
     }
 
+    /* GALLERY */
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -105,11 +106,13 @@
       overflow: hidden;
       background: white;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      transition: 0.3s ease;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .photo-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-6px);
     }
 
     .photo-card img {
@@ -147,6 +150,48 @@
       font-size: 0.85rem;
       margin-top: 40px;
     }
+
+    /* 📱 MOBILE OPTIMIZATION */
+    @media (max-width: 768px) {
+
+      body {
+        padding: 20px 12px;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .photo-card img {
+        height: 190px;
+      }
+    }
+
+    /* 📱 SMALL PHONE */
+    @media (max-width: 480px) {
+
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .photo-card img {
+        height: 280px;
+      }
+
+      .photo-card:active {
+        transform: scale(0.98);
+      }
+    }
   </style>
 </head>
 
@@ -157,7 +202,7 @@
   <p>Capturing moments that feel like magic</p>
 </header>
 
-<!-- SOCIAL CARDS -->
+<!-- SOCIAL -->
 <div class="cards">
 
   <a class="card-link" href="https://www.instagram.com/flashwing_photography" target="_blank">
