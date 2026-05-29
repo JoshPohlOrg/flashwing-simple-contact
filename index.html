@@ -38,7 +38,7 @@
       color: #666;
     }
 
-    /* SOCIAL CARDS */
+    /* SOCIAL */
     .cards {
       display: flex;
       gap: 25px;
@@ -84,7 +84,7 @@
       color: #777;
     }
 
-    /* SECTION TITLE */
+    /* SECTION */
     .section-title {
       text-align: center;
       font-size: 2rem;
@@ -151,47 +151,35 @@
       margin-top: 40px;
     }
 
-    /* 📱 MOBILE OPTIMIZATION */
-    @media (max-width: 768px) {
-
-      body {
-        padding: 20px 12px;
-      }
-
-      header h1 {
-        font-size: 2.2rem;
-      }
-
-      .section-title {
-        font-size: 1.5rem;
-      }
-
-      .gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-
-      .photo-card img {
-        height: 190px;
-      }
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
     }
 
-    /* 📱 SMALL PHONE */
-    @media (max-width: 480px) {
-
-      .gallery {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .photo-card img {
-        height: 280px;
-      }
-
-      .photo-card:active {
-        transform: scale(0.98);
-      }
+    .lightbox img {
+      max-width: 95%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 10px;
     }
+
+    .lightbox .close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 2.5rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+
   </style>
 </head>
 
@@ -233,6 +221,12 @@
   <button class="load-more" id="loadMoreBtn">Load More Photos</button>
 </div>
 
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <span class="close" id="closeLightbox">&times;</span>
+  <img id="lightboxImg" src="" alt="Full view">
+</div>
+
 <footer>
   © 2026 Flashwing Photography • Made with ✨ and light
 </footer>
@@ -269,7 +263,31 @@ const imageFiles = [
 const gallery = document.getElementById("gallery");
 const btn = document.getElementById("loadMoreBtn");
 
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const closeBtn = document.getElementById("closeLightbox");
+
 let visibleCount = 8;
+
+function openLightbox(src) {
+  lightboxImg.src = src;
+  lightbox.style.display = "flex";
+}
+
+function closeLightboxFn() {
+  lightbox.style.display = "none";
+  lightboxImg.src = "";
+}
+
+closeBtn.addEventListener("click", closeLightboxFn);
+
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) closeLightboxFn();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeLightboxFn();
+});
 
 function render() {
   gallery.innerHTML = "";
@@ -278,10 +296,15 @@ function render() {
     const card = document.createElement("div");
     card.className = "photo-card";
 
-    card.innerHTML = `
-      <img src="assets/${file}" alt="Photography">
-    `;
+    const img = document.createElement("img");
+    img.src = `assets/${file}`;
+    img.alt = "Photography";
 
+    img.addEventListener("click", () => {
+      openLightbox(img.src);
+    });
+
+    card.appendChild(img);
     gallery.appendChild(card);
   });
 
